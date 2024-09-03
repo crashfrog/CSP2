@@ -1,0 +1,15 @@
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_A.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_C.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_D.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_E.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_F.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_G.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_H.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_I.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_J.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_K.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_L.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_M.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_N.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_O.fasta
+/flash/storage/scratch/Robert.Literman/NextFlow/CSP2/assets/SNP/Sample_B.fasta
