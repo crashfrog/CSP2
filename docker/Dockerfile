@@ -5,10 +5,10 @@
 # https://github.com/StaPH-B/docker-builds/blob/master/mummer/4.0.0/Dockerfile
 # https://github.com/StaPH-B/docker-builds/blob/master/skesa/2.4.0/Dockerfile
 
-ARG CSP2_VER="1.0.0"
+ARG CSP2_VER="0.9.0"
 ARG BEDTOOLS_VER="2.31.1"
 ARG MUMMER_VER="4.0.0"
-ARG SKESA_VER="2.5.0"
+ARG SKESA_VER="2.4.0"
 ARG MASH_VER="2.3"
 ARG BBMAP_VER="38.90"
 ARG PYTHON_VER="3.8"
@@ -56,10 +56,10 @@ RUN pip install --no-cache-dir -U pandas~=1.2.0 pybedtools refchooser scikit-lea
 
 ADD https://github.com/arq5x/bedtools2/archive/refs/tags/v${BEDTOOLS_VER}.tar.gz .
 ADD https://github.com/mummer4/mummer/releases/download/v${MUMMER_VER}rc1/mummer-${MUMMER_VER}rc1.tar.gz .
-ADD https://github.com/ncbi/SKESA/releases/download/2.4.0/skesa.centos.7.7 .
-ADD https://github.com/ncbi/SKESA/releases/download/2.4.0/gfa_connector.centos7.7 .
-ADD https://github.com/ncbi/SKESA/releases/download/2.4.0/kmercounter.centos7.7 .
-ADD https://github.com/marbl/Mash/releases/download/v2.3/mash-Linux64-v${MASH_VER}.tar .
+ADD https://github.com/ncbi/SKESA/releases/download/${SKESA_VER}/skesa.centos.7.7 .
+ADD https://github.com/ncbi/SKESA/releases/download/${SKESA_VER}/gfa_connector.centos7.7 .
+ADD https://github.com/ncbi/SKESA/releases/download/${SKESA_VER}/kmercounter.centos7.7 .
+ADD https://github.com/marbl/Mash/releases/download/v${MASH_VER}/mash-Linux64-v${MASH_VER}.tar .
 
 # Install BEDTools
 # per https://github.com/StaPH-B/docker-builds/blob/master/bedtools/2.31.1/Dockerfile
@@ -110,7 +110,7 @@ ARG CSP2_VER
 ARG CSP2_BRANCH="main"
 ARG PYTHON_VER
 
-LABEL base.image="ubuntu:jammy"
+LABEL base.image="ubuntu:focal"
 LABEL version=${CSP2_VER}
 LABEL software="CSP2"
 LABEL software.version=${CSP2_VER}
@@ -223,6 +223,21 @@ RUN awk '{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t" $6}' V5.3.2.artic.bed > 
 RUN /bin/bash -c 'make test'
 
 FROM app AS release
+
+ARG CSP2_VER
+ARG BEDTOOLS_VER
+ARG MUMMER_VER
+ARG SKESA_VER
+ARG MASH_VER
+ARG BBMAP_VER
+ARG PYTHON_VER
+ENV CSP2_VER=${CSP2_VER}
+ENV BEDTOOLS_VER=${BEDTOOLS_VER}
+ENV MUMMER_VER=${MUMMER_VER}
+ENV SKESA_VER=${SKESA_VER}
+ENV MASH_VER=${MASH_VER}
+ENV BBMAP_VER=${BBMAP_VER}
+ENV PYTHON_VER=${PYTHON_VER}
 
 # set PATH, set perl locale settings for singularity compatibility
 ENV PATH="/opt/venv/bin:/usr/local/bin:/skesa:$PATH" \
