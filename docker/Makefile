@@ -33,7 +33,11 @@ snp: config ## generate pairwise distances for a set of query isolates
 snpdiffs: config
 
 test_screen:
-	nextflow run CSP2.nf --out Test_Output/Contamination_Screen --runmode screen --ref_fasta assets/Screen/Assembly/Lab_Control.fasta --fasta assets/Screen/Assembly/Week_42_Assembly.fasta --reads assets/Screen/Reads --forward _1.fq.gz --reverse _2.fq.gz --readext fq.gz
+	nextflow run CSP2.nf -profile standard --runmode screen --fasta assets/Screen/Assembly/Week_42_Assembly.fasta --reads assets/Screen/Reads/ --ref_fasta assets/Screen/Assembly/Lab_Control.fasta --out ./CSP2_Test_Screen --readext fq.gz --forward _1.fq.gz --reverse _2.fq.gz
 
-test: config test_screen ## 10 soil samples - check the relatedness of the cultured isolates
-	diff -bur Test_Output/Contamination_Screen/ assets/Screen/Output/Contamination_Screen/
+test_snp:
+	nextflow run CSP2.nf -profile standard --runmode snp --fasta assets/SNP/ --n_ref 3 --out ./CSP2_Test_SNP --max_missing 50
+
+test: config test_screen test_snp ## 10 soil samples - check the relatedness of the cultured isolates
+	ls -lah assets/Screen/Output/Contamination_Screen/
+	diff -bur ./CSP2_Test_SNP/snpdiffs assets/SNP/Output/Soil_Analysis/snpdiffs

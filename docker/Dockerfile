@@ -11,14 +11,16 @@ ARG MUMMER_VER="4.0.0"
 ARG SKESA_VER="2.5.0"
 ARG MASH_VER="2.3"
 ARG BBMAP_VER="38.90"
+ARG PYTHON_VER="3.8"
 
-FROM ubuntu:jammy AS build
+FROM ubuntu:focal AS build
 
 ARG BEDTOOLS_VER
 ARG MUMMER_VER
 ARG SKESA_VER
 ARG MASH_VER
 ARG BBMAP_VER
+ARG PYTHON_VER
 
 WORKDIR /build
 
@@ -29,18 +31,28 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    tzdata \
+    gpg-agent \
+    software-properties-common \
     build-essential \
     zlib1g-dev \
     libghc-bzlib-dev \
     liblzma-dev \
     wget \
-    ca-certificates \
-    python3 python3-pip python3-full python3-dev python3-venv && \
-    python3 -m venv --copies /opt/venv
+    ca-certificates 
+
+RUN add-apt-repository 'ppa:deadsnakes/ppa' && apt-get update && apt-get install -y --no-install-recommends \
+    python${PYTHON_VER} \
+#    python${PYTHON_VER}-pip \
+#    python${PYTHON_VER}-full \
+    python${PYTHON_VER}-dev \
+    python${PYTHON_VER}-venv && \
+    python${PYTHON_VER} -m venv --copies /opt/venv
+
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN pip install --no-cache-dir -U pybedtools refchooser
+RUN pip install --no-cache-dir -U pandas~=1.2.0 pybedtools refchooser scikit-learn
 
 ADD https://github.com/arq5x/bedtools2/archive/refs/tags/v${BEDTOOLS_VER}.tar.gz .
 ADD https://github.com/mummer4/mummer/releases/download/v${MUMMER_VER}rc1/mummer-${MUMMER_VER}rc1.tar.gz .
@@ -92,10 +104,11 @@ RUN wget -O BBMap_${BBMAP_VER}.tar.gz https://sourceforge.net/projects/bbmap/fil
     mv bbmap/* /usr/local/bin
 
 
-FROM ubuntu:jammy AS app
+FROM ubuntu:focal AS app
 
 ARG CSP2_VER
 ARG CSP2_BRANCH="main"
+ARG PYTHON_VER
 
 LABEL base.image="ubuntu:jammy"
 LABEL version=${CSP2_VER}
@@ -120,7 +133,7 @@ COPY --from=build /usr/local/bin /usr/local/bin
 # Lots of perl nonsense
 COPY --from=build /usr/local/lib /usr/local/lib
 COPY --from=build /usr/local/libexec/mummer /usr/local/libexec/mummer
-COPY --from=build /usr/lib/x86_64-linux-gnu/perl/5.34/ /usr/lib/x86_64-linux-gnu/perl/5.34/
+COPY --from=build /usr/lib/x86_64-linux-gnu/perl /usr/lib/x86_64-linux-gnu/perl
 COPY --from=build /usr/local/share /usr/local/share
 COPY --from=build /usr/share /usr/share
 COPY --from=build /opt/venv /opt/venv
@@ -128,7 +141,7 @@ COPY --from=build /usr/bin/make /usr/local/bin/make
 
 
 # Python stuff
-COPY --from=build /usr/lib/python3.10 /usr/lib/python3.10
+COPY --from=build /usr/lib/python${PYTHON_VER} /usr/lib/python${PYTHON_VER}
 
 
 #Install JRE
@@ -151,19 +164,23 @@ ENV PATH="/opt/venv/bin:/usr/local/bin:/skesa:$PATH" \
     LC_ALL=C \
     NXF_OFFLINE='true'
 
-ADD https://github.com/CFSAN-Biostatistics/CSP2.git#${CSP2_BRANCH} .
+ADD https://github.com/CFSAN-Biostatistics/CSP2.git#${CSP2_BRANCH}:bin ./bin
+ADD https://github.com/CFSAN-Biostatistics/CSP2.git#${CSP2_BRANCH}:conf ./conf
+ADD https://github.com/CFSAN-Biostatistics/CSP2.git#${CSP2_BRANCH}:subworkflows ./subworkflows
+ADD https://raw.githubusercontent.com/CFSAN-Biostatistics/CSP2/${CSP2_BRANCH}/CSP2.nf ./CSP2.nf
+ADD https://raw.githubusercontent.com/CFSAN-Biostatistics/CSP2/${CSP2_BRANCH}/nextflow.config ./nextflow.config
 
-FROM app AS test
+
+FROM app AS pretest
 
 # set PATH, set perl locale settings for singularity compatibility
 ENV PATH="/opt/venv/bin:/usr/local/bin:/skesa:$PATH" \
     LC_ALL=C \
     NXF_OFFLINE='true'
 
-ADD https://github.com/CFSAN-Biostatistics/CSP2.git#${CSP2_BRANCH}:assets assets/
-
-# Test MASH
-
+#Alternate test data directory
+ADD https://github.com/crashfrog/CSP2.git#main:assets assets/
+# ADD https://github.com/crashfrog/CSP2.git#main:Test_Output Test_Output/
 
 
 # Test MUmmer installation
@@ -178,6 +195,9 @@ ADD http://mummer.sourceforge.net/examples/data/H_pyloriJ99_Eslice.fasta .
 ADD https://raw.githubusercontent.com/artic-network/artic-ncov2019/master/primer_schemes/nCoV-2019/V5.3.2/SARS-CoV-2.primer.bed ./V5.3.2.artic.bed
 ADD https://raw.githubusercontent.com/artic-network/artic-ncov2019/master/primer_schemes/nCoV-2019/V4.1/SARS-CoV-2.primer.bed ./V4.1.artic.bed
 
+FROM pretest AS test
+
+# Test MASH
 
 RUN nucmer -h && \
   promer -h && \
@@ -192,7 +212,7 @@ RUN bedtools --help && \
     bedtools --version
 
 # downloads two bedfiles for ARTIC SARS-CoV-2 artic schemes, fixes their formatting, uses bedtools sort, intersect, and merge
-# per # per https://github.com/StaPH-B/docker-builds/blob/master/bedtools/2.31.1/Dockerfile
+# per https://github.com/StaPH-B/docker-builds/blob/master/bedtools/2.31.1/Dockerfile
 RUN awk '{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t" $6}' V5.3.2.artic.bed > V5.3.2.unsorted.bed && \
     bedtools sort -i V5.3.2.unsorted.bed > V5.3.2.bed && \
     awk '{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t" $6}' V4.1.artic.bed   > V4.1.bed   && \
@@ -200,7 +220,7 @@ RUN awk '{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t" $6}' V5.3.2.artic.bed > 
     mergeBed -i V5.3.2.bed > merged_test.bed && \
     head intersect_test.bed merged_test.bed
 
-RUN ls assets/Screen/Output/Contamination_Screen/ && make test && touch /app/.test
+RUN /bin/bash -c 'make test'
 
 FROM app AS release
 
