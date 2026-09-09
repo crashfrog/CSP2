@@ -1,0 +1,142 @@
+{
+  "entries": {
+    "Isolate_Data.tsv": {
+      "kind": "tsv",
+      "lines": 5,
+      "sha256": "784a4b02ed4b0026a852f9f958c4eb012645e1ee0ac9429fe819988137b59f36"
+    },
+    "Raw_MUMmer_Summary.tsv": {
+      "kind": "tsv",
+      "lines": 4,
+      "sha256": "b5a6c4b389ca5100625e835536896e94b979b20804a56e44f0f4e9d269dbf270"
+    },
+    "SNP_Analysis/SRR498286_contigs/Locus_Categories.tsv": {
+      "kind": "tsv",
+      "lines": 211,
+      "sha256": "6fa108b60903559b4c8f7ee5d3196748e9bfe8fb6d6190b27b186f85867fdbb8"
+    },
+    "SNP_Analysis/SRR498286_contigs/Query_Coverage.tsv": {
+      "kind": "tsv",
+      "lines": 5,
+      "sha256": "8a7135483859d766f55c71d42c78e57914a57cdee2b140513510682a625868d0"
+    },
+    "SNP_Analysis/SRR498286_contigs/Reference_Screening.tsv": {
+      "kind": "tsv",
+      "lines": 4,
+      "sha256": "22711f27d7e56fc8b2ebe420586dfc440eabff84fd84a51a435cdb3ce59e68c9"
+    },
+    "SNP_Analysis/SRR498286_contigs/snp_distance_matrix.tsv": {
+      "kind": "matrix",
+      "lines": 16,
+      "sha256": "7d648bf143e7d0f2cfdf15c063ce9891357d087320367df463592551800ef143"
+    },
+    "SNP_Analysis/SRR498286_contigs/snp_distance_matrix_preserved.tsv": {
+      "kind": "matrix",
+      "lines": 16,
+      "sha256": "7d648bf143e7d0f2cfdf15c063ce9891357d087320367df463592551800ef143"
+    },
+    "SNP_Analysis/SRR498286_contigs/snp_distance_pairwise.tsv": {
+      "kind": "pairwise",
+      "lines": 7,
+      "sha256": "4e30e636f6357fb05d96d4beddddab7ec231584085af26ad72ff56ba088549d1"
+    },
+    "SNP_Analysis/SRR498286_contigs/snp_distance_pairwise_preserved.tsv": {
+      "kind": "pairwise",
+      "lines": 7,
+      "sha256": "4e30e636f6357fb05d96d4beddddab7ec231584085af26ad72ff56ba088549d1"
+    },
+    "SNP_Analysis/SRR498286_contigs/snplist.txt": {
+      "kind": "lines",
+      "lines": 210,
+      "sha256": "dd387a5a592edfbd966525f85cbb9e6d34c742d06f2d2dde8b954b65937998f8"
+    },
+    "SNP_Analysis/SRR498286_contigs/snplist_preserved.txt": {
+      "kind": "lines",
+      "lines": 210,
+      "sha256": "dd387a5a592edfbd966525f85cbb9e6d34c742d06f2d2dde8b954b65937998f8"
+    },
+    "SNP_Analysis/SRR498286_contigs/snpma.fasta": {
+      "kind": "alignment",
+      "lines": 210,
+      "sha256": "20400906c7b9c8db47544ec244361d64207245a68604f4af37a6b4908f2a5e5e"
+    },
+    "SNP_Analysis/SRR498286_contigs/snpma_preserved.fasta": {
+      "kind": "alignment",
+      "lines": 210,
+      "sha256": "20400906c7b9c8db47544ec244361d64207245a68604f4af37a6b4908f2a5e5e"
+    },
+    "logs/Reference_IDs.txt": {
+      "kind": "lines",
+      "lines": 1,
+      "sha256": "19dff385482a27fa8f51653a2da0b35dc8de5cc182d1cbfa36b6414f93a17441"
+    },
+    "snpdiffs/SRR498285_contigs__vs__SRR498286_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 237,
+      "sha256": "dea157beddbfbc19133afe056a319a20324433c0507201e7e9deeba1744aa3bc"
+    },
+    "snpdiffs/SRR498361_contigs__vs__SRR498286_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 732,
+      "sha256": "80699c2207e844eaccbfc1914d075ef05c3ea2dc50c37a716dfaa06c67753db6"
+    },
+    "snpdiffs/SRR498363_contigs__vs__SRR498286_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 887,
+      "sha256": "d0f3b96c6ebb87bab0edb1496f1ce2eae4b2fce2f9a9f15de3f629b4880acefa"
+    }
+  },
+  "root": "benchmark/runs/repro_a/out",
+  "skipped": [
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.1coords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.1delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.mcoords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.mdelta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.qdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.rdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.report",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.snps",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.unqry",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.1coords",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.1delta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.delta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.mcoords",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.mdelta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.qdiff",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.rdiff",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.report",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.snps",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498286_contigs.unqry",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.1coords",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.1delta",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.delta",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.mcoords",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.mdelta",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.qdiff",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.rdiff",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.report",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.snps",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.unqry",
+    "MUMmer_Output/SRR498363_contigs__vs__SRR498286_contigs.unref",
+    "SNP_Analysis/SRR498286_contigs/CSP2_SNP_Pipeline.log",
+    "SNP_Analysis/SRR498286_contigs/SNPDiffs.txt",
+    "logs/All_SNPDiffs.txt",
+    "logs/CSP2_Params.txt",
+    "logs/MUMmer_Logs/SRR498285_contigs__vs__SRR498286_contigs.log",
+    "logs/MUMmer_Logs/SRR498361_contigs__vs__SRR498286_contigs.log",
+    "logs/MUMmer_Logs/SRR498363_contigs__vs__SRR498286_contigs.log",
+    "logs/SNP_Logs/SRR498285_contigs__vs__SRR498286_contigs.log",
+    "logs/SNP_Logs/SRR498285_contigs__vs__SRR498286_contigs_SNPs.tsv",
+    "logs/SNP_Logs/SRR498361_contigs__vs__SRR498286_contigs.log",
+    "logs/SNP_Logs/SRR498361_contigs__vs__SRR498286_contigs_SNPs.tsv",
+    "logs/SNP_Logs/SRR498363_contigs__vs__SRR498286_contigs.log",
+    "logs/SNP_Logs/SRR498363_contigs__vs__SRR498286_contigs_SNPs.tsv",
+    "logs/sketch_dir/Mash_Sketches.txt",
+    "logs/sketch_dir/Mash_Triangle",
+    "logs/sketch_dir/SRR498285_contigs.msh",
+    "logs/sketch_dir/SRR498286_contigs.msh",
+    "logs/sketch_dir/SRR498361_contigs.msh",
+    "logs/sketch_dir/SRR498363_contigs.msh"
+  ]
+}
