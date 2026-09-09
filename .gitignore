@@ -182,6 +182,14 @@ pyrightconfig.json
 [Ll]ib64
 [Ll]ocal
 [Ss]cripts
+
+# The VirtualEnv patterns above ([Bb]in/[Ll]ib/...) unintentionally match CSP2's SOURCE
+# directory bin/ (already-tracked files survive, but NEW files like bin/csp2_common.py
+# would be silently ignored). Keep the source bin/ tracked.
+!/bin/
+!/bin/**
+bin/__pycache__/
+*.pyc
 pyvenv.cfg
 pip-selfcheck.json
 
