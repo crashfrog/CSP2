@@ -14,15 +14,24 @@ workflow runRefChooser{
 
     main:
 
-    // Make MASH sketches (1 CPU per query) and generate triangle (all CPUs)
-    mash_refs = query_data
+    // Sketch each unique query (1 CPU each). mashSketch now emits a typed
+    // (name, .msh path) tuple staged through channels instead of writing to a shared
+    // directory and echoing the path via stdout.
+    sketches = query_data
     .unique{it -> it[1]}
     .map { [ it[0], it[1] ] }
-    | mashSketch 
-    | collect
+    | mashSketch
+
+    // Collect the sketch files and build the triangle. The .msh files are staged into
+    // the triangle task's workdir; `ls *.msh` there reproduces the same lexical order the
+    // old shared-directory glob produced, so the triangle (and RefChooser's order-
+    // sensitive selection) is byte-identical.
+    mash_refs = sketches
+    .map { it -> it[1] }
+    .collect()
     | mashTriangle
     | chooseRefs
-    | splitCsv | collect | flatten | collate(1) 
+    | splitCsv | collect | flatten | collate(1)
 
     reference_data = query_data
     .map{it -> tuple(it[1].toString(),it[0])}
@@ -37,13 +46,15 @@ workflow runRefChooser{
 }
 
 process chooseRefs{
-    
+
     executor = 'local'
     cpus = 1
     maxForks = 1
 
+    publishDir mash_directory, mode: 'copy', pattern: 'CSP2_Ref_Selection.tsv'
+
     input:
-    val(mash_triangle)
+    path(mash_triangle)
 
     output:
     stdout
@@ -53,50 +64,46 @@ process chooseRefs{
     ref_count = params.n_ref.toInteger()
     ref_script = file("${projectDir}/bin/chooseRefs.py")
     """
-    $params.load_python_module  
-    cd $mash_directory
-
+    $params.load_python_module
     python $ref_script --ref_count $ref_count --mash_triangle_file $mash_triangle --trim_name "${params.trim_name}"
     """
 }
 
 process mashTriangle{
 
+    publishDir mash_directory, mode: 'copy', pattern: 'Mash_{Triangle,Sketches.txt}'
+
     input:
-    val(mash_sketches)
+    path(mash_sketches)
 
     output:
-    stdout
+    path("Mash_Triangle")
 
     script:
 
-    sketch_file = file("${mash_directory}/Mash_Sketches.txt")
-    mash_triangle_file = file("${mash_directory}/Mash_Triangle")
-
     """
     $params.load_mash_module
-    ls ${mash_directory}/*.msh > $sketch_file
-    mash triangle -p ${params.cores} -l $sketch_file > $mash_triangle_file
-    echo -n $mash_triangle_file
+    ls *.msh > Mash_Sketches.txt
+    mash triangle -p ${params.cores} -l Mash_Sketches.txt > Mash_Triangle
     """
 }
 
 process mashSketch{
     cpus = 1
 
+    publishDir mash_directory, mode: 'copy', pattern: '*.msh'
+
     input:
     tuple val(query_name),val(query_fasta)
-    
+
     output:
-    stdout
+    tuple val(query_name), path("${query_name}.msh")
 
     script:
 
-    mash_path = "${mash_directory}/${query_name}.msh"
     """
     $params.load_mash_module
-    mash sketch -s 10000 -p 1 -o $mash_path $query_fasta
-    echo -n "${mash_path}"
+    mash sketch -s 10000 -p 1 -o ${query_name} $query_fasta
     """
 }
 
