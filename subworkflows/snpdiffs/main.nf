@@ -38,12 +38,6 @@ np_boot = params.b.toInteger()
 uf_boot = params.bb.toInteger()
 boot_sum = np_boot + uf_boot
 
-workflow {
-    main:
-    // Run SNP pipeline
-    runSNPPipeline(query_data: all_snpdiffs, reference_data: ref_id_file)
-}
-
 workflow runScreen {
     
     take:

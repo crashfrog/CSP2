@@ -1,0 +1,28 @@
+# Pinned environment to run CSP2 in its CURRENT (MUMmer-based) state for baseline
+# equivalence benchmarking. Mirrors conf/CSP2.yaml + docker/Dockerfile pins
+# (pandas ~1.x era) so that refactor PRs are diffed against the same numerics.
+# SKESA is included so `screen`/reads paths also run; drop it if you only need `snp`.
+name: csp2-bench
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  # Match CSP2's dev-era working stack. docker/Dockerfile pins pandas~=1.2 on py3.8 and
+  # pip-installs a MODERN scikit-learn — bin/chooseRefs.py needs BOTH: pandas<=1.3 for
+  # `Series.transform(scipy.stats.zscore)` AND sklearn>=1.2 for `KMeans(n_init='auto')`.
+  # These pins are the intersection that runs the current code unmodified.
+  - python=3.8
+  - openjdk=17       # nextflow runtime (nextflow itself added via setup.sh)
+  - mummer4          # nucmer / dnadiff / show-coords / show-snps
+  - bedtools
+  - mash
+  - bbmap            # kmercountexact.sh (compileMUMmer kmer Jaccard)
+  - skesa            # only needed for read input (screen/assemble modes)
+  - iqtree           # only needed when --notree is disabled
+  # python libraries used by bin/*.py
+  - pandas=1.2.*
+  - numpy=1.22.*
+  - scipy=1.8.*
+  - scikit-learn=1.2.*
+  - pybedtools
+  - biopython
