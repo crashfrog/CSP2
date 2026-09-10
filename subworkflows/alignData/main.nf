@@ -35,7 +35,7 @@ workflow alignGenomes {
     sample_pairwise = to_align
         .filter { "${it[0]}" != "${it[2]}" } // Don't map things to themselves
         | runMUMmer
-        | splitCsv
+        | map { q, r, sd -> [ q, r, sd.toString() ] } // (query, reference, snpdiffs path)
 
     log_hold = sample_pairwise
         .concat(snpdiffs_data)
@@ -57,37 +57,31 @@ workflow alignGenomes {
 process runMUMmer {
     label 'mummerMem'
 
+    // .snpdiffs is now a real task output staged from the workdir and published to the
+    // canonical dir, instead of being written straight to a shared absolute directory and
+    // its path echoed via stdout. dnadiff still runs in a subshell inside mummer_directory
+    // so its intermediate artifacts land there exactly as before (unique -p prefix per pair).
+    publishDir snpdiffs_directory, mode: 'copy', pattern: '*.snpdiffs'
+
     input:
     tuple val(query_name), val(query_fasta), val(ref_name), val(ref_fasta)
 
     output:
-    stdout
+    tuple val(query_name), val(ref_name), path("${query_name}__vs__${ref_name}.snpdiffs")
 
     script:
     report_id = "${query_name}__vs__${ref_name}"
     mummer_log = file("${mummer_log_directory}/${report_id}.log")
+    """
+    $params.load_mummer_module
+    $params.load_python_module
+    $params.load_bedtools_module
+    $params.load_bbtools_module
 
-    // Ensure MUMmer directories exist
-    if (!mummer_directory.isDirectory()) {
-        error "$mummer_directory does not exist..."
-    } else {
-        """
-        $params.load_mummer_module
-        $params.load_python_module
-        $params.load_bedtools_module
-        $params.load_bbtools_module
+    ( cd ${mummer_directory} && dnadiff -p ${report_id} ${ref_fasta} ${query_fasta} )
 
-        cd ${mummer_directory}
-        dnadiff -p ${report_id} ${ref_fasta} ${query_fasta}
-
-        # rm -rf ${mummer_directory}/${report_id}.mdelta
-        # rm -rf ${mummer_directory}/${report_id}.mcoords
-        # rm -rf ${mummer_directory}/${report_id}.1delta
-        # rm -rf ${mummer_directory}/${report_id}.delta
-
-        python ${mummerScript} --query "${query_name}" --query_fasta "${query_fasta}" --reference "${ref_name}" --reference_fasta "${ref_fasta}" --mummer_dir "${mummer_directory}" --snpdiffs_dir "${snpdiffs_directory}" --temp_dir "${temp_dir}" --log_file "${mummer_log}"
-        """
-    }
+    python ${mummerScript} --query "${query_name}" --query_fasta "${query_fasta}" --reference "${ref_name}" --reference_fasta "${ref_fasta}" --mummer_dir "${mummer_directory}" --snpdiffs_dir "." --temp_dir "${temp_dir}" --log_file "${mummer_log}"
+    """
 }
 
 process saveMUMmerLog {
