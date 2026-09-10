@@ -368,21 +368,14 @@ workflow{
             if(!ref_mode){
 
                 if((params.runmode == "align") || (params.runmode == "screen")){
-                    seen_combinations = []
-                    
-                    to_align = query_data.combine(query_data) // Self-combine query data
-                    .collect().flatten().collate(4)
-                    .filter{it -> (it[1].toString() != "null") && (it[3].toString() != "null")} // Can't align without FASTA
-                    .filter{ it -> // Get unique combinations
-            
-                    combination = ["${it[0]}", "${it[2]}"].sort()
-                    
-                    if(combination in seen_combinations) {
-                        return false
-                    } else {
-                        seen_combinations << combination
-                        return true
-                    }}
+                    // Deterministic all-vs-all: exactly one canonical orientation per
+                    // distinct pair (lexicographically smaller id = query, larger = ref).
+                    // Replaces a mutable `seen_combinations` accumulator whose surviving
+                    // orientation was nondeterministic under parallel channel emission.
+                    to_align = query_data
+                    .combine(query_data)
+                    .filter{ it -> (it[1].toString() != "null") && (it[3].toString() != "null") } // need FASTA
+                    .filter{ it -> it[0].toString() < it[2].toString() } // one orientation; drops self-pairs
                 } 
                 
                 // If running SNP pipeline without references, run RefChooser to choose references

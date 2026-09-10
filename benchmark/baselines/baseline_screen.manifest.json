@@ -1,0 +1,140 @@
+{
+  "entries": {
+    "Isolate_Data.tsv": {
+      "kind": "tsv",
+      "lines": 5,
+      "sha256": "03a7c70cb162e1da5ce418e54539332d9a7ddb76e340fd1bbe8c601e880fe5b3"
+    },
+    "Raw_MUMmer_Summary.tsv": {
+      "kind": "tsv",
+      "lines": 7,
+      "sha256": "74e5631ef55954f9bb533c3476675263b5000d590d5d6952cd771ba8340f6c68"
+    },
+    "Screening_Results.tsv": {
+      "kind": "tsv",
+      "lines": 7,
+      "sha256": "adfaf6bd47cf75ac0a68300e5ee5e6831b704c20019705b7ebf1c533c2ae47a3"
+    },
+    "logs/Reference_IDs.txt": {
+      "kind": "lines",
+      "lines": 1,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "snpdiffs/SRR498285_contigs__vs__SRR498286_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 237,
+      "sha256": "dea157beddbfbc19133afe056a319a20324433c0507201e7e9deeba1744aa3bc"
+    },
+    "snpdiffs/SRR498285_contigs__vs__SRR498361_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 774,
+      "sha256": "bfebcd3721771e50e103968b65b3f37795a87fba58940ab9f0208baf03c59744"
+    },
+    "snpdiffs/SRR498285_contigs__vs__SRR498363_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 1015,
+      "sha256": "49a98d72b1eea479b9a5fdab6a1fb2a399f72fb78c10da2adcd3e25dca5b7d03"
+    },
+    "snpdiffs/SRR498286_contigs__vs__SRR498361_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 765,
+      "sha256": "af0b23c66c06a18246d52780ca87793feea162e72a403d11433329a3134e9806"
+    },
+    "snpdiffs/SRR498286_contigs__vs__SRR498363_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 980,
+      "sha256": "0810228c42a4208938365a9c496a6c302f44823acd6a64c483805f7d8cd7c3f1"
+    },
+    "snpdiffs/SRR498361_contigs__vs__SRR498363_contigs.snpdiffs": {
+      "kind": "snpdiffs",
+      "lines": 1950,
+      "sha256": "251da855217db973c7f0bf401f27ddc996a122748ce5ab2df200d9e928e1fd64"
+    }
+  },
+  "root": "benchmark/runs/det_x/out",
+  "skipped": [
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.1coords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.1delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.mcoords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.mdelta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.qdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.rdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.report",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.snps",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498286_contigs.unqry",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.1coords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.1delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.mcoords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.mdelta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.qdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.rdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.report",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.snps",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498361_contigs.unref",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.1coords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.1delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.delta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.mcoords",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.mdelta",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.qdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.rdiff",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.report",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.snps",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.unqry",
+    "MUMmer_Output/SRR498285_contigs__vs__SRR498363_contigs.unref",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.1coords",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.1delta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.delta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.mcoords",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.mdelta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.qdiff",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.rdiff",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.report",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.snps",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498361_contigs.unref",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.1coords",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.1delta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.delta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.mcoords",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.mdelta",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.qdiff",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.rdiff",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.report",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.snps",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.unqry",
+    "MUMmer_Output/SRR498286_contigs__vs__SRR498363_contigs.unref",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.1coords",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.1delta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.delta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.mcoords",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.mdelta",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.qdiff",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.rdiff",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.report",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.snps",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.unqry",
+    "MUMmer_Output/SRR498361_contigs__vs__SRR498363_contigs.unref",
+    "logs/All_SNPDiffs.txt",
+    "logs/CSP2_Params.txt",
+    "logs/MUMmer_Logs/SRR498285_contigs__vs__SRR498286_contigs.log",
+    "logs/MUMmer_Logs/SRR498285_contigs__vs__SRR498361_contigs.log",
+    "logs/MUMmer_Logs/SRR498285_contigs__vs__SRR498363_contigs.log",
+    "logs/MUMmer_Logs/SRR498286_contigs__vs__SRR498361_contigs.log",
+    "logs/MUMmer_Logs/SRR498286_contigs__vs__SRR498363_contigs.log",
+    "logs/MUMmer_Logs/SRR498361_contigs__vs__SRR498363_contigs.log",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498286_contigs.log",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498286_contigs_SNPs.tsv",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498361_contigs.log",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498361_contigs_SNPs.tsv",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498363_contigs.log",
+    "logs/Screening_Logs/SRR498285_contigs__vs__SRR498363_contigs_SNPs.tsv",
+    "logs/Screening_Logs/SRR498286_contigs__vs__SRR498361_contigs.log",
+    "logs/Screening_Logs/SRR498286_contigs__vs__SRR498361_contigs_SNPs.tsv",
+    "logs/Screening_Logs/SRR498286_contigs__vs__SRR498363_contigs.log",
+    "logs/Screening_Logs/SRR498286_contigs__vs__SRR498363_contigs_SNPs.tsv",
+    "logs/Screening_Logs/SRR498361_contigs__vs__SRR498363_contigs.log",
+    "logs/Screening_Logs/SRR498361_contigs__vs__SRR498363_contigs_SNPs.tsv"
+  ]
+}
