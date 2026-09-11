@@ -73,17 +73,16 @@ python benchmark/compare.py \
 Exit 0 / `EQUIVALENT` ⇒ the refactor preserved every scientific output. Otherwise the
 report lists added/removed/changed files; `--show <substr>` dumps the differing entries.
 
-### Caveat: `screen` mode is not yet equivalence-gateable
+### `screen` mode is now equivalence-gateable
 
-`snp` mode is fully deterministic (RefChooser `random_state=0` + single-thread nucmer) and
-is the equivalence gate. **`screen` mode is NOT**: with no reference, CSP2.nf builds the
-all-vs-all pair list with a mutable Groovy accumulator (`seen_combinations`), so the
-query/reference ORIENTATION of each pair is nondeterministic across runs. Two runs of the
-*same code* produce `A__vs__B` in one and `B__vs__A` in the other — different `.snpdiffs`
-filenames and swapped Query/Reference columns. This is pre-existing (proven: same-code
-screen runs diff the same way), not a refactor artifact. Until that accumulator is replaced
-with a deterministic operator (a candidate follow-up Nextflow PR), validate refactors on
-`snp` mode; for `screen`, only a structural smoke (does it run, right shape?) is meaningful.
+`snp` mode is fully deterministic (RefChooser `random_state=0` + single-thread nucmer).
+`screen` mode used to be nondeterministic: with no reference, CSP2.nf built the all-vs-all
+pair list with a mutable Groovy accumulator (`seen_combinations`), so the query/reference
+ORIENTATION of each pair varied across runs of the *same code* (`A__vs__B` vs `B__vs__A` —
+different `.snpdiffs` filenames, swapped Query/Reference columns). `fix/deterministic-pair-
+selection` replaced that accumulator with a deterministic operator (canonical orientation:
+lexicographically smaller id = query), so `screen` mode is now safe to gate the same way as
+`snp` mode.
 
 ## Reproducibility check
 
