@@ -64,7 +64,6 @@ process chooseRefs{
     ref_count = params.n_ref.toInteger()
     ref_script = file("${projectDir}/bin/chooseRefs.py")
     """
-    $params.load_python_module
     python $ref_script --ref_count $ref_count --mash_triangle_file $mash_triangle --trim_name "${params.trim_name}"
     """
 }
@@ -82,7 +81,6 @@ process mashTriangle{
     script:
 
     """
-    $params.load_mash_module
     ls *.msh > Mash_Sketches.txt
     mash triangle -p ${params.cores} -l Mash_Sketches.txt > Mash_Triangle
     """
@@ -102,7 +100,6 @@ process mashSketch{
     script:
 
     """
-    $params.load_mash_module
     mash sketch -s 10000 -p 1 -o ${query_name} $query_fasta
     """
 }

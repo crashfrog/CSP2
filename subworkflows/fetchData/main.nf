@@ -343,7 +343,6 @@ process getSNPDiffsData{
 
     user_snpdiffs_list.write(snpdiffs_paths.join('\n') + "\n")
     """
-    $params.load_python_module
     python ${userSNPDiffs} --snpdiffs_file "${user_snpdiffs_list}" --trim_name "${params.trim_name}"
     """
 }
@@ -425,7 +424,6 @@ process fetchReads{
         error "$dir is not a valid directory..."
     } else{
     """
-    $params.load_python_module
     python ${findReads} --read_dir ${dir} --read_filetype ${read_ext} --forward_suffix ${forward_suffix} --reverse_suffix ${reverse_suffix} --trim_name ${params.trim_name}
     """
     }
@@ -520,13 +518,11 @@ process skesaAssemble{
     } else if(read_type == "Paired"){
         forward_reverse = read_location.split(";")
         """
-        $params.load_skesa_module
         skesa --cores ${skesa_cpus} --use_paired_ends --fastq ${forward_reverse[0]} ${forward_reverse[1]} --contigs_out ${assembly_file}
         echo "${sample_name},${read_type},${read_location},${assembly_file}"
         """
     } else if(read_type == "Single"){
         """
-        $params.load_skesa_module
         skesa --cores ${skesa_cpus} --fastq ${read_location} --contigs_out ${assembly_file}
         echo "${sample_name},${read_type},${read_location},${assembly_file}"
         """
