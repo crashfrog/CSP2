@@ -303,14 +303,6 @@ if (params.runmode != "conda_init") {
 
     params.ref_mode = ref_mode
 
-    // Set up modules if needed
-    params.load_python_module = params.python_module == "" ? "" : "module load -s ${params.python_module}"
-    params.load_skesa_module = params.skesa_module == "" ? "" : "module load -s ${params.skesa_module}"
-    params.load_bedtools_module = params.bedtools_module == "" ? "" : "module load -s ${params.bedtools_module}"
-    params.load_bbtools_module = params.bbtools_module == "" ? "" : "module load -s ${params.bbtools_module}"
-    params.load_mummer_module = params.mummer_module == "" ? "" : "module load -s ${params.mummer_module}"
-    params.load_mash_module = params.mash_module == "" ? "" : "module load -s ${params.mash_module}"
-
     // Save params to log file
     params.each { key, value ->
         file("${log_directory}/CSP2_Params.txt") << "$key = $value\n"
@@ -328,12 +320,6 @@ if (params.runmode != "conda_init") {
     params.ref_id_file = "./"
     params.mash_directory = "./"
     params.ref_mode = false
-    params.load_python_module = ""
-    params.load_skesa_module = ""
-    params.load_bedtools_module = ""
-    params.load_bbtools_module = ""
-    params.load_mummer_module = ""
-    params.load_mash_module = ""
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

@@ -73,10 +73,6 @@ process runMUMmer {
     report_id = "${query_name}__vs__${ref_name}"
     mummer_log = file("${mummer_log_directory}/${report_id}.log")
     """
-    $params.load_mummer_module
-    $params.load_python_module
-    $params.load_bedtools_module
-    $params.load_bbtools_module
 
     ( cd ${mummer_directory} && dnadiff -p ${report_id} ${ref_fasta} ${query_fasta} )
 
@@ -99,7 +95,6 @@ process saveMUMmerLog {
     saveSNPDiffs = file("$projectDir/bin/saveSNPDiffs.py")
     all_snpdiffs_list.write(snpdiffs_paths.join('\n') + '\n')
     """
-    $params.load_python_module
     python $saveSNPDiffs --snpdiffs_file "${all_snpdiffs_list}" --summary_file "${snpdiffs_summary_file}" --isolate_file "${isolate_data_file}" --trim_name "${params.trim_name}" --ref_id_file "${ref_id_file}"
     """
 }

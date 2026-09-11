@@ -60,8 +60,6 @@ process screenSNPDiffs{
 
     screenDiffs = file("${projectDir}/bin/screenSNPDiffs.py")
     """
-    $params.load_python_module
-    $params.load_bedtools_module
     python $screenDiffs --snpdiffs_file "${all_snpdiffs_list}" --log_dir "${screen_log_dir}" --min_cov "${min_cov}" --min_len "${min_length}" --min_iden "${min_iden}" --ref_edge "${reference_edge}" --query_edge "${query_edge}" --density_windows "${params.dwin}" --max_snps "${params.wsnps}" --trim_name "${params.trim_name}" --output_file "${screening_results_file}" --ref_id "${ref_id_file}" --tmp_dir "${temp_dir}"
     """
 } 
@@ -104,7 +102,6 @@ process compileResults{
     compile_script = file("${projectDir}/bin/compileSNPResults.py")
     snp_dirs_list.write(snp_directories.join("\n")+ "\n")
     """
-    $params.load_python_module
     python $compile_script --snp_dirs_file "${snp_dirs_list}" --output_directory "${snp_directory}" --isolate_data_file "${isolate_data_file}" --mummer_data_file "${snpdiffs_summary_file}"
     """
 }
@@ -129,8 +126,6 @@ process runSnpPipeline{
     out_snpdiffs = file("${snp_dir}/SNPDiffs.txt")
     out_snpdiffs.write(diff_files.join("\n")+ "\n")
     """
-    $params.load_python_module
-    $params.load_bedtools_module
     python $snp_script --reference_id "${reference_id}" --output_directory "${snp_dir}" --snpdiffs_file "${out_snpdiffs}" --log_directory "${snp_log_dir}" --min_cov "${min_cov}" --min_len "${min_length}" --min_iden "${min_iden}" --ref_edge "${reference_edge}" --query_edge "${query_edge}" --density_windows "${params.dwin}" --max_snps "${params.wsnps}" --trim_name "${params.trim_name}" --max_missing "${max_missing}" --tmp_dir "${temp_dir}" --rescue "${edge_rescue}"
     echo -n $snp_dir
     """
