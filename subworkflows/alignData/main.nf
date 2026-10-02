@@ -76,9 +76,13 @@ process runMUMmer {
     plan_file = "${report_id}.phrayaplan"
     """
     # In Nextflow, the process working directory is the task workdir.
-    # Use relative paths — plan_file is a Groovy var declared above, rendered
-    # into the bash script here.
+    # Use relative paths — report_id/plan_file are Groovy vars declared above.
 
+    # Phraya: plan → align (reference-palette) → filter --format snpdiffs per space.
+    # Align uses reference-palette mode (ADR-0011): the reference FASTA's contigs
+    # become reference spaces, each query contig is aligned against all of them.
+    # Output is a directory with one <contig_name>.phraya per reference space,
+    # plus cross_space.phraya.queries.
     phraya plan --reference ${ref_fasta} --inputs ${query_fasta} --output ${plan_file}
 
     # Balanced strategy: Myers primary (K=2), WFA fallback for divergent/secondary hits.
@@ -87,14 +91,23 @@ process runMUMmer {
         --output "${report_id}" \
         --strategy balanced
 
-    phraya filter "${report_id}/ref.phraya" \
-        --format snpdiffs \
-        --output ${report_id}.snpdiffs \
-        --reference-fasta ${ref_fasta} \
-        --query-fasta ${query_fasta} \
-        --reference-id "${ref_name}"
+    # Per-contig snpdiffs: phraya filter --format snpdiffs is single-input
+    # (main.rs: "only inputs[0] is used"), so we must run it once per .phraya
+    # file and merge the outputs. See docs/phraya-snpdiffs-multi-contig-blocker.md.
+    mkdir -p per_contig
+    for phraya_file in "${report_id}"/*.phraya; do
+        contig_label=$(basename "$phraya_file" .phraya)
+        phraya filter "$phraya_file" \
+            --format snpdiffs \
+            --output "per_contig/${contig_label}.snpdiffs" \
+            --reference-fasta ${ref_fasta} \
+            --query-fasta ${query_fasta} \
+            --reference-id "${ref_name}"
+    done
 
+    # Merge per-contig snpdiffs into one file.
     python ${projectDir}/bin/saveSNPDiffsLog.py \
+        --snpdiffs_dir per_contig \
         --out ${report_id}.snpdiffs \
         --log_file "${mummer_log}" \
         --query "${query_name}" --reference "${ref_name}"

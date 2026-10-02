@@ -1,17 +1,21 @@
 # Phraya × CSP2 Refactor — Architectural Plan & Decision
 
-## Decision: Proceed with Phraya, phased.
+## Decision: Phase A BLOCKED — requires Phraya single-reference-space feature for multi-contig FASTAs.
 
 Phraya's aligner engine is production-ready (SIMD dispatch fixed 2026-06-08, CSP2 spike
-findings B1-B4 all resolved in Unreleased CHANGELOG). It can replace `runMUMmer`'s dnadiff
-role for variant calling. **However**, Phraya is NOT a drop-in mummer replacement — its
-output is a binary `.phraya` format (MessagePack + zstd), and it has **zero** distance-matrix,
-core-SNP-concatenation, multi-sample-VCF, or tree-inference code. The downstream SNP-matrix
-and tree stages must remain in Python (or be newly written).
+findings B1-B4 all resolved). It can replace `runMUMmer`'s dnadiff role for variant
+calling. **However**, `phraya plan --reference multi_contig.fasta` (reference-palette mode,
+ADR-0011) writes one `.phraya` per reference contig and produces self-alignment noise:
+tested on SRR30874442 vs SRR30874443 (87 contigs each), phraya produces 173,840 SNPs vs
+mummer's 33,386 — a 5.2× inflation from reference-contig-as-query self-matches at ~50%
+identity. No CSP2-side coverage/identity threshold cleanly separates real SNPs from this
+noise. Additionally, `phraya filter --format snpdiffs` is single-input only (main.rs:2448:
+`let file = &phraya_files[0]`), requiring per-file splitting + merge.
 
-This is explicitly documented as planned future work in Phraya's own PRD (Phase 5) and
-CLAUDE.md (deliberately excluded).
-
+Phase A is paused pending a Phraya feature: either (A) a single-reference-space mode that
+treats a multi-contig FASTA as one reference space, or (B) multi-input merge support on
+`phraya filter --format snpdiffs` plus a self-alignment suppression mechanism. See
+~/Documents/specs_and_handoffs/phraya-csp2-escalation.md for full analysis.
 ## Capability Matrix
 
 | CSP2 process | Current tool | Phraya equivalent | Action |
