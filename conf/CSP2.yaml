@@ -9,8 +9,9 @@ dependencies:
   - bedtools
   - mash
   - skesa
-  - mummer
+  - mummer        # retained for Phase A equivalence testing; dropped in Phase B once phraya ships --format snpdiffs
   - bbmap
+  - phraya        # replaces dnadiff; requires phraya >=0.2.0 (snpdiffs output format, see docs/phraya-snpdiffs-output-handoff.md)
   - pandas
   - biopython
   - scikit-learn

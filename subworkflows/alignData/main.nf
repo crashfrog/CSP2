@@ -1,4 +1,5 @@
-// Subworkflow to run MUMmer for query/reference comparisons
+// Subworkflow to run Phraya aligner for query/reference comparisons
+
 
 // Set path variables
 output_directory = file(params.output_directory)
@@ -20,7 +21,6 @@ ref_id_file = file(params.ref_id_file)
 all_snpdiffs_list = file("${log_directory}/All_SNPDiffs.txt")
 isolate_data_file = file("${output_directory}/Isolate_Data.tsv")
 snpdiffs_summary_file = file("${output_directory}/Raw_MUMmer_Summary.tsv")
-mummerScript = file("$projectDir/bin/compileMUMmer.py")
 
 workflow alignGenomes {
     take:
@@ -58,9 +58,10 @@ process runMUMmer {
     label 'mummerMem'
 
     // .snpdiffs is now a real task output staged from the workdir and published to the
-    // canonical dir, instead of being written straight to a shared absolute directory and
-    // its path echoed via stdout. dnadiff still runs in a subshell inside mummer_directory
-    // so its intermediate artifacts land there exactly as before (unique -p prefix per pair).
+    // canonical dir. Alignment is performed by phraya (WFA O(s·n)), and the .snpdiffs
+    // text format is produced by `phraya filter --format snpdiffs` — see
+    // docs/phraya-runMUMmer-wiring-spec.md and
+    // ~/Documents/specs_and_handoffs/phraya-csp2-handoff-back.md §1.3.
     publishDir snpdiffs_directory, mode: 'copy', pattern: '*.snpdiffs'
 
     input:
@@ -72,11 +73,31 @@ process runMUMmer {
     script:
     report_id = "${query_name}__vs__${ref_name}"
     mummer_log = file("${mummer_log_directory}/${report_id}.log")
+    plan_file = "${report_id}.phrayaplan"
     """
+    # In Nextflow, the process working directory is the task workdir.
+    # Use relative paths — plan_file is a Groovy var declared above, rendered
+    # into the bash script here.
 
-    ( cd ${mummer_directory} && dnadiff -p ${report_id} ${ref_fasta} ${query_fasta} )
+    phraya plan --reference ${ref_fasta} --inputs ${query_fasta} --output ${plan_file}
 
-    python ${mummerScript} --query "${query_name}" --query_fasta "${query_fasta}" --reference "${ref_name}" --reference_fasta "${ref_fasta}" --mummer_dir "${mummer_directory}" --snpdiffs_dir "." --temp_dir "${temp_dir}" --log_file "${mummer_log}"
+    # Balanced strategy: Myers primary (K=2), WFA fallback for divergent/secondary hits.
+    # Score-ratio ≥ 0.95 threshold is Phraya's default for variant reporting.
+    phraya align --reference ${ref_fasta} ${plan_file} \
+        --output "${report_id}" \
+        --strategy balanced
+
+    phraya filter "${report_id}/ref.phraya" \
+        --format snpdiffs \
+        --output ${report_id}.snpdiffs \
+        --reference-fasta ${ref_fasta} \
+        --query-fasta ${query_fasta} \
+        --reference-id "${ref_name}"
+
+    python ${projectDir}/bin/saveSNPDiffsLog.py \
+        --out ${report_id}.snpdiffs \
+        --log_file "${mummer_log}" \
+        --query "${query_name}" --reference "${ref_name}"
     """
 }
 
