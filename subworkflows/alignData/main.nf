@@ -87,17 +87,17 @@ process runMUMmer {
         --output "${report_id}" \
         --strategy balanced
 
-    phraya filter "${report_id}/ref.phraya" \
+    # Phraya filter --format snpdiffs now accepts multiple .phraya files (multi-input merge,
+    # per phraya-csp2-handoff-back.md §1.4). Pass all output .phraya files to a single call.
+    # The glob ${report_id}/*.phraya matches all per-contig reference-space files.
+    phraya filter "${report_id}"/*.phraya \
         --format snpdiffs \
         --output ${report_id}.snpdiffs \
         --reference-fasta ${ref_fasta} \
         --query-fasta ${query_fasta} \
-        --reference-id "${ref_name}"
+        --reference-id "${ref_name}" \
+        --query-id "${query_name}"
 
-    python ${projectDir}/bin/saveSNPDiffsLog.py \
-        --out ${report_id}.snpdiffs \
-        --log_file "${mummer_log}" \
-        --query "${query_name}" --reference "${ref_name}"
     """
 }
 
